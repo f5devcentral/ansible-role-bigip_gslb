@@ -1,0 +1,27 @@
+---
+
+- name: Setup provider
+  set_fact:
+    provider:
+      server: "{{ bigiq_onboard_server }}"
+      server_port: "{{ bigiq_onboard_server_port }}"
+      user: "{{ bigiq_onboard_user }}"
+      password: "{{ bigiq_onboard_password }}"
+      validate_certs: "{{ bigiq_onboard_validate_certs }}"
+      transport: "{{ bigiq_onboard_transport }}"
+
+- name: Wait for BIG-IP to be available
+  bigip_wait:
+    timeout: 300
+    provider: "{{ provider }}"
+  delegate_to: localhost
+  register: status
+  until: status is success
+  retries: 10
+  delay: 6
+
+- import_tasks: setup.yaml
+  when: bigip_glsb_state == 'present'
+
+- import_tasks: teardown.yanl
+  when: bigip_glsb_state == 'absent'

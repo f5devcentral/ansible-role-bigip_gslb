@@ -1,0 +1,13 @@
+---
+
+bigip_glsb_app_name: localhost
+bigip_glsb_app_domain: gslb.local.com
+bigip_glsb_pool_lb_method: round-robin
+bigip_glsb_record_type: a
+bigip_glsb_state: present
+bigip_glsb_pools:
+  - name: "{{ app_name }}.{{ app_domain }}-pool"
+    members:
+      - state: present
+        server: test-server
+        virtual_server: 10.1.2.3:443

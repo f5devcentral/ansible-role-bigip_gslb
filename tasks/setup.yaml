@@ -1,0 +1,36 @@
+---
+
+- name: Create WIP Pool
+  bigip_gtm_pool:
+    provider: "{{ provider }}"
+    name: "{{ item.name }}"
+    type: "{{ bigip_glsb_record_type }}"
+    preferred_lb_method: "{{ item.preferred_lb_method | default(omit)}}"
+    alternate_lb_method: "{{ item.alternate_lb_method | default(omit)}}"
+    fallback_lb_method: "{{ item.fallback_lb_method | default(omit)}}"
+    monitors: "{{ item.monitors | default(omit) }}"
+  loop: "{{ pools }}"
+  delegate_to: localhost
+
+- include_tasks: gtm-pool-members.yaml
+  loop: "{{ pools }}"
+  loop_control:
+    loop_var: pool
+
+- name: Create Empty List for WIP Pools
+  set_fact:
+    wip_pools: []
+
+- name: Merge WIP Pools
+  set_fact:
+    wip_pools: "{{ wip_pools + [{ 'name':item.name }]}}"
+  loop: "{{ pools }}"
+
+- name: Create WIP
+  bigip_gtm_wide_ip:
+    provider: "{{ provider }}"
+    name: "{{ bigip_glsb_app_name }}.{{ bigip_glsb_app_domain }}"
+    type: "{{ bigip_glsb_record_type }}"
+    pools: "{{ wip_pools }}"
+    pool_lb_method: "{{ bigip_glsb_pool_lb_method }}"
+  delegate_to: localhost
