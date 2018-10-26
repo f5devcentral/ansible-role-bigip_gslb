@@ -9,15 +9,28 @@
     server_name: "{{ item.server }}"
   loop: "{{ pool.members }}"
   delegate_to: localhost
+  when: bigip_glsb_state == 'present'
 
 - name: Create WIP Pool Members
   bigip_gtm_pool_member:
     provider: "{{ provider }}"
     pool: "{{ pool.name }}"
-    type: "{{ record_type }}"
+    type: "{{ bigip_glsb_record_type }}"
     server_name: "{{ item.server }}"
     virtual_server: "{{ item.virtual_server }}"
     ratio: "{{item.ratio | default(omit) }}"
-    state: "{{ item.state }}"
   loop: "{{ pool.members }}"
   delegate_to: localhost
+  when: bigip_glsb_state == 'present'
+
+- name: Remove GTM Virtual Server
+  bigip_gtm_virtual_server:
+    provider: "{{ provider }}"
+    address: "{{ item.virtual_server.split(':')[0] }}"
+    name: "{{ item.virtual_server }}"
+    port: "{{ item.virtual_server.split(':')[1] }}"
+    server_name: "{{ item.server }}"
+    state: absent
+  loop: "{{ pool.members }}"
+  delegate_to: localhost
+  when: bigip_glsb_state == 'absent'

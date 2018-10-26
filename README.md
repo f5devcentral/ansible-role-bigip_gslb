@@ -57,8 +57,7 @@ objects, effectively tearing down the GSLB configuration.
     bigip_glsb_pools:
       - name: "{{ app_name }}.{{ app_domain }}-pool"
         members:
-          - state: present
-            server: test-server
+          - server: test-server
             virtual_server: 10.1.2.3:443
 
 The pools to create as part of the GSLB. By default, we provide a dummy implementation that
@@ -80,11 +79,10 @@ example of what you, yourself, will need to provide to correctly setup a GSLB co
         bigip_glsb_pools:
           - name: "app1.domain-pool"
             members:
-              - state: present
-                server: test-server1
+              - server: test-server1
                 virtual_server: 10.1.2.3:443
       roles:
-        - { role: f5devcentral.bigip_gslb }
+        - role: f5devcentral.bigip_gslb
 
 ## License
 

@@ -2,6 +2,8 @@
 
 dependency:
   name: galaxy
+  options:
+    role-file: molecule/resources/requirements.yml
 driver:
   name: docker
 lint:
@@ -34,6 +36,17 @@ provisioner:
     converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
 scenario:
   name: integration
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    - side_effect
+    - verify
+    - destroy
 verifier:
   name: testinfra
   lint:

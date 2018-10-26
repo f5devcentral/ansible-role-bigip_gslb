@@ -1,13 +1,22 @@
 ---
 
+### Connection parameters
+provider_server: localhost
+provider_server_port: 443
+provider_user: admin
+provider_password: secret
+provider_validate_certs: false
+provider_transport: rest
+provider_timeout: 120
+
+## GSLB configuration
 bigip_glsb_app_name: localhost
 bigip_glsb_app_domain: gslb.local.com
 bigip_glsb_pool_lb_method: round-robin
 bigip_glsb_record_type: a
 bigip_glsb_state: present
 bigip_glsb_pools:
-  - name: "{{ app_name }}.{{ app_domain }}-pool"
+  - name: "{{ bigip_glsb_app_name }}.{{ bigip_glsb_app_domain }}-pool"
     members:
-      - state: present
-        server: test-server
+      - server: test-server
         virtual_server: 10.1.2.3:443

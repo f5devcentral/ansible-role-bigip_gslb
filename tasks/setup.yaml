@@ -9,22 +9,18 @@
     alternate_lb_method: "{{ item.alternate_lb_method | default(omit)}}"
     fallback_lb_method: "{{ item.fallback_lb_method | default(omit)}}"
     monitors: "{{ item.monitors | default(omit) }}"
-  loop: "{{ pools }}"
+  loop: "{{ bigip_glsb_pools }}"
   delegate_to: localhost
 
 - include_tasks: gtm-pool-members.yaml
-  loop: "{{ pools }}"
+  loop: "{{ bigip_glsb_pools }}"
   loop_control:
     loop_var: pool
 
-- name: Create Empty List for WIP Pools
-  set_fact:
-    wip_pools: []
-
 - name: Merge WIP Pools
   set_fact:
-    wip_pools: "{{ wip_pools + [{ 'name':item.name }]}}"
-  loop: "{{ pools }}"
+    wip_pools: "{{ default_wip_pools + [{ 'name':item.name }]}}"
+  loop: "{{ bigip_glsb_pools }}"
 
 - name: Create WIP
   bigip_gtm_wide_ip:

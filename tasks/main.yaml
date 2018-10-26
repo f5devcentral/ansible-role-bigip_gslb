@@ -3,12 +3,12 @@
 - name: Setup provider
   set_fact:
     provider:
-      server: "{{ bigiq_onboard_server }}"
-      server_port: "{{ bigiq_onboard_server_port }}"
-      user: "{{ bigiq_onboard_user }}"
-      password: "{{ bigiq_onboard_password }}"
-      validate_certs: "{{ bigiq_onboard_validate_certs }}"
-      transport: "{{ bigiq_onboard_transport }}"
+      server: "{{ provider_server }}"
+      server_port: "{{ provider_server_port }}"
+      user: "{{ provider_user }}"
+      password: "{{ provider_password }}"
+      validate_certs: "{{ provider_validate_certs }}"
+      transport: "{{ provider_transport }}"
 
 - name: Wait for BIG-IP to be available
   bigip_wait:
@@ -20,8 +20,22 @@
   retries: 10
   delay: 6
 
+- name: Get current provisioning information
+  bigip_device_facts:
+    gather_subset:
+      - provision-info
+    provider: "{{ provider }}"
+  register: f
+  delegate_to: localhost
+
+- name: Assert that GTM is provisioned
+  assert:
+    that:
+      - "'gtm' not in f.provision_info | json_query(\"[?level=='none'].name\")"
+    fail_msg: GTM must be provisioned to use this role.
+
 - import_tasks: setup.yaml
   when: bigip_glsb_state == 'present'
 
-- import_tasks: teardown.yanl
+- import_tasks: teardown.yaml
   when: bigip_glsb_state == 'absent'
