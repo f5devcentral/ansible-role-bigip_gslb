@@ -1,5 +1,7 @@
 ---
 
+- import_tasks: dependencies.yaml
+
 - name: Setup provider
   set_fact:
     provider:

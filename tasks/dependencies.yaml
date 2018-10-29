@@ -1,0 +1,6 @@
+---
+
+- name: Install role dependencies
+  pip:
+    name: jmespath
+  delegate_to: localhost
