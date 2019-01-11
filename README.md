@@ -21,15 +21,15 @@ None.
 
 Available variables are listed below. For their default values, see `defaults/main.yml`:
 
-    provider_server: localhost
-    provider_server_port: 443
-    provider_user: admin
-    provider_password: secret
-    provider_validate_certs: no
-    provider_transport: rest
-    provider_timeout: 120
+    provider:
+        server: localhost
+        server_port: 443
+        user: admin
+        password: secret
+        validate_certs: false
+        transport: rest
 
-Establishes initial connection to your BIG-IQ. These values are substituted into
+Establishes initial connection to your BIG-IP. These values are substituted into
 your ``provider`` module parameter.
 
     bigip_glsb_app_name: localhost
