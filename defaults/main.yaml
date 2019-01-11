@@ -1,13 +1,13 @@
 ---
 
 ### Connection parameters
-provider_server: localhost
-provider_server_port: 443
-provider_user: admin
-provider_password: secret
-provider_validate_certs: false
-provider_transport: rest
-provider_timeout: 120
+provider:
+  server: localhost
+  server_port: 443
+  user: admin
+  password: secret
+  validate_certs: false
+  transport: rest
 
 ## GSLB configuration
 bigip_glsb_app_name: localhost
