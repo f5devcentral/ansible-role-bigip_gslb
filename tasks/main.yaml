@@ -2,16 +2,6 @@
 
 - import_tasks: dependencies.yaml
 
-- name: Setup provider
-  set_fact:
-    provider:
-      server: "{{ provider_server }}"
-      server_port: "{{ provider_server_port }}"
-      user: "{{ provider_user }}"
-      password: "{{ provider_password }}"
-      validate_certs: "{{ provider_validate_certs }}"
-      transport: "{{ provider_transport }}"
-
 - name: Wait for BIG-IP to be available
   bigip_wait:
     timeout: 300
