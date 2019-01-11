@@ -16,10 +16,13 @@
   loop: "{{ bigip_glsb_pools }}"
   loop_control:
     loop_var: pool
-
+    
+- set_fact:
+    wip_pools: []
+    
 - name: Merge WIP Pools
   set_fact:
-    wip_pools: "{{ default_wip_pools + [{ 'name':item.name }]}}"
+    wip_pools: "{{ wip_pools + [{ 'name':item.name }]}}"
   loop: "{{ bigip_glsb_pools }}"
 
 - name: Create WIP
