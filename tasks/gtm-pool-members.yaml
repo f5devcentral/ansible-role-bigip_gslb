@@ -18,7 +18,7 @@
     type: "{{ bigip_glsb_record_type }}"
     server_name: "{{ item.server }}"
     virtual_server: "{{ item.virtual_server }}"
-    ratio: "{{item.ratio | default(omit) }}"
+    ratio: "{{ item.ratio | default(omit) }}"
   loop: "{{ pool.members }}"
   delegate_to: localhost
   when: bigip_glsb_state == 'present'

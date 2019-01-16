@@ -2,7 +2,7 @@
 
 - name: Merge WIP Pools to remove
   set_fact:
-    wip_pools: "{{ default_wip_pools + [{ 'name':item.name }]}}"
+    wip_pools: "{{ default_wip_pools + [{ 'name':item.name }] }}"
   loop: "{{ bigip_glsb_pools }}"
 
 - name: Remove WIP
@@ -20,9 +20,9 @@
     provider: "{{ provider }}"
     name: "{{ item.name }}"
     type: "{{ bigip_glsb_record_type }}"
-    preferred_lb_method: "{{ item.preferred_lb_method | default(omit)}}"
-    alternate_lb_method: "{{ item.alternate_lb_method | default(omit)}}"
-    fallback_lb_method: "{{ item.fallback_lb_method | default(omit)}}"
+    preferred_lb_method: "{{ item.preferred_lb_method | default(omit) }}"
+    alternate_lb_method: "{{ item.alternate_lb_method | default(omit) }}"
+    fallback_lb_method: "{{ item.fallback_lb_method | default(omit) }}"
     monitors: "{{ item.monitors | default(omit) }}"
     state: absent
   loop: "{{ bigip_glsb_pools }}"
