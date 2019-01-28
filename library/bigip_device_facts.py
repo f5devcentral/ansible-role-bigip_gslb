@@ -9406,7 +9406,7 @@ class LtmPoolsParameters(BaseParameters):
             elif state in ['down'] and session in ['monitor-enabled']:
                 member['state'] = 'offline'
             elif state in ['up'] and session in ['monitor-enabled']:
-                member['state'] = 'online'
+                member['state'] = 'available'
             else:
                 member['state'] = 'disabled'
             self._remove_internal_keywords(member)
